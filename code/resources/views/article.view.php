@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Articles</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600|Roboto" rel="stylesheet">
     <style>
         h1
         {
             font-family: 'Montserrat';
         }
+        
         * {margin: 0; padding: 0}
         body
         {
@@ -17,6 +19,12 @@
         }
         .article
         {
+            display: -webkit-flex;
+            display: -moz-flex;
+            display: -ms-flex;
+            display: -o-flex;
+            display: flex;
+            justify-content: space-between;
             background: #fff;
             padding: 40px;
             border-bottom: 1px solid #ccc;
@@ -88,6 +96,7 @@
         {
             border-top: 1px solid #ccc;
             padding: 40px;
+            
         }
         .comment h4
         {
@@ -123,9 +132,34 @@
             color: #fff;
             border-radius: 0 5px 5px 0;
         }
+        .breadcrumb
+        {
+            border-bottom: 1px solid #ccc;
+            background: white;
+            color: #333;
+            padding: 10px;
+            display: -webkit-flex;
+            display: -moz-flex;
+            display: -ms-flex;
+            display: -o-flex;
+            display: flex;
+        }
+        .breadcrumb .separator
+        {
+            margin: 0 10px;
+            color: teal;
+        }
     </style>
 </head>
 <body>
+    <div class="breadcrumb">
+        <a href="/">Articles</a>
+        
+        <div class="separator">
+            /
+        </div>
+        <?=htmlspecialchars($article->title)?>
+    </div>
     <nav>
         <h1 id="heading">Article: </h1>
         <ul class="controls">
@@ -143,11 +177,20 @@
     </nav>
     <section class="articles">
         <section class="article">
-            <h1 class="title"><?=$article->title?></h1>    
-            <p class="text"><?=$article->content?></p>
+            <div>
+                <h1 class="title"><?=htmlspecialchars($article->title)?></h1>    
+                <p class="text"><?=htmlspecialchars($article->content)?></p>
+            </div>
+                        <?php 
+                if (canedit($article->id)):
+             ?>
+            <div>
+                <a href="/article/<?=$article->id?>/edit" style="padding: 10px; display: block;">Edit</a>
+            </div>
+        <?php endif ?>
         </section>
     </section>
-
+    
     <section class="comments">
         <?php if (\Vendor\Auth::id()): ?>
             <form action="/article/<?= $article->id ?>/comment" method="post"
@@ -165,8 +208,8 @@
         <?php foreach ($comments as $comment): ?>
                     
         <section class="comment">
-            <h4 class="username"><?= $_C->getUsername($comment->id)?></h1>    
-            <p class="text"><?=$comment->content?></p>
+            <h4 class="username"><?= htmlspecialchars($_C->getUsername($comment->id))?></h1>    
+            <p class="text"><?=htmlspecialchars($comment->content)?></p>
             <?php if(comment_own($comment->id)): ?>
                           <form method="post" action="/article/<?= $article->id ?>/comment/<?= $comment->id ?>/remove">
                 <input type="submit" name="submit" id="submit" value="remove" style="background: crimson; border-radius: 5px;">

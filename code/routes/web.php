@@ -6,6 +6,7 @@ Router::get('/login', '\\App\\Controllers\\HomeController::login');
 Router::post('/login', '\\App\\Controllers\\HomeController::signin');
 Router::get('/signup', '\\App\\Controllers\\HomeController::signupForm');
 Router::post('/signup', '\\App\\Controllers\\HomeController::signup');
+Router::get('/signout', '\\App\\Controllers\\HomeController::signout');
 Router::get('/create', '\\App\\Controllers\\HomeController::create');
 Router::post('/create', '\\App\\Controllers\\HomeController::store');
 Router::get('/article/{id}/edit', '\\App\\Controllers\\HomeController::edit');

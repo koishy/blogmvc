@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Articles</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600|Roboto" rel="stylesheet">
     <style>
         h1
@@ -17,6 +19,12 @@
         }
         .article
         {
+            display: -webkit-flex;
+            display: -moz-flex;
+            display: -ms-flex;
+            display: -o-flex;
+            display: flex;
+            justify-content: space-between;
             background: #fff;
             padding: 40px;
             border-bottom: 1px solid #ccc;
@@ -77,16 +85,38 @@
         {
             box-shadow: 0 5px 30px rgba(0,0,0,0.2);
         }
+        .breadcrumb
+        {
+            border-bottom: 1px solid #ccc;
+            background: white;
+            color: #333;
+            padding: 10px;
+            display: -webkit-flex;
+            display: -moz-flex;
+            display: -ms-flex;
+            display: -o-flex;
+            display: flex;
+        }
+        .breadcrumb .separator
+        {
+            margin: 0 10px;
+            color: teal;
+        }
     </style>
 </head>
 <body>
+
+    <div class="breadcrumb">
+        <a href="/">Articles</a>
+    </div>
     <nav>
         <h1 id="heading">Articles: </h1>
         <ul class="controls">
                 
             <?php if (\Vendor\Auth::id()): ?>
                 <li><?= \Vendor\Auth::User()->name ?></li>
-                <li><a href="/create">Create new article</a></li>                
+                <li><a href="/create">Create new article</a></li>  
+                <li><a href="/signout">Sign Out</a></li>              
             <?php else: ?>
                 <li><a href="/signup">Sign up</a></li>
                 <li><a href="/login">Sign in</a></li>
@@ -100,13 +130,18 @@
 
             <a href="/article/<?=$article->id?>" style="text-decoration: none;">
         <section class="article">
-            <h1 class="title"><?=$article->title?></h1>    
-            <p class="text"><?=$article->content?></p>
+            <div class="r">
+                <h1 class="title"><?=htmlspecialchars($article->title)?></h1>    
+                <p class="text"><?=htmlspecialchars($article->content)?></p>
+            </div>
+            <div class="l">
             <?php 
                 if (canedit($article->id)):
              ?>
             <a href="/article/<?=$article->id?>/edit" style="padding: 10px; display: block;">Edit</a>
             <?php endif ?>
+            </div>
+
         </section></a>
 
         <?php endforeach ?>

@@ -14,6 +14,13 @@ class HomeController
         ]);
     }
 
+    public static function signout($params)
+    {
+        unset($_SESSION['user_id']);
+
+        header('Location: /');
+    }
+
     public static function article($params)
     {
         $article = new \App\Article;
@@ -43,7 +50,10 @@ class HomeController
     public static function edit($params)
     {
         if (!canedit($params['id'])) header('Location: /');
-        return view('edit', ['id' => $params['id']]);
+        $article = new \App\Article;
+        $article = $article->find($params['id']);
+
+        return view('edit', ['id' => $params['id'], 'article' => $article]);
     }
 
     public static function patch($params)
